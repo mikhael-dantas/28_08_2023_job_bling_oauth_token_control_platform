@@ -8,7 +8,7 @@ const Callback: React.FC = (props: any) => {
     getTokenHandler({ code: props.searchParams.code, state: props.searchParams.state }).then(async (data) => {
       console.log(data)
       if (data.error) {
-        setError(data.error)
+        setError(data.error.message)
         return
       }
       setTimeout(() => {

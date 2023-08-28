@@ -32,6 +32,31 @@ export async function getTokenHandler(args: { code: string; state: string }): Pr
     output: response,
   }
 }
+export async function readTokens() {
+  const db = new sqlite3.Database("BlingTokensDb.sqlite")
+
+  await CreateTableIfNotExist(db)
+
+  const tokens = await AsyncReadTokens(db)
+
+  await CloseConnection(db)
+
+  return tokens
+}
+
+export async function deleteTokens(args: { ids: number[] }) {
+  const db = new sqlite3.Database("BlingTokensDb.sqlite")
+
+  await AsyncDeleteTokens(db, args.ids)
+
+  await CloseConnection(db)
+
+  return {
+    output: {
+      message: "Tokens deleted successfully",
+    },
+  }
+}
 
 /**
  *
@@ -162,16 +187,19 @@ async function AsyncInsertToken(
 }
 
 async function AsyncReadTokens(db: sqlite3.Database) {
+  let tokens: any[] = []
   const asyncReadAndLog = new Promise((resolve, reject) => {
     db.all(`SELECT * FROM tokens`, (err, rows) => {
       if (err) {
         reject(err)
       } else {
+        tokens = rows
         resolve({ message: "Data read successfully" })
       }
     })
   })
   await asyncReadAndLog
+  return tokens
 }
 
 async function AsyncDeleteTokens(db: sqlite3.Database, ids: number[]) {
