@@ -75,7 +75,8 @@ const ListTokens: React.FC<any> = ({ pass }: any) => {
               <td className="px-6 py-4">
                 {/* data e hora formatados,formato atual: "2023-08-28 11:30:03" */}
                 <span className="font-bold">
-                  {token.created_at.split(" ")[0].split("-").reverse().join("/")} {token.created_at.split(" ")[1]}
+                  {new Date(token.created_at).toLocaleDateString("pt-BR")}{" "}
+                  {new Date(token.created_at).toLocaleTimeString("pt-BR")}
                 </span>
               </td>
               <td className="px-6 py-4 text-right">
