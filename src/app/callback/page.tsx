@@ -24,9 +24,10 @@ grant_type=authorization_code&code=[authorization_code] */
   useEffect(() => {
     getTokenHandler({ code: props.searchParams.code, state: props.searchParams.state }).then((data) => {
       alert(JSON.stringify(data))
-      setTimeout(() => {
-        window.close()
-      }, 2000)
+      console.log(data)
+      // setTimeout(() => {
+      //   window.close()
+      // }, 2000)
     })
   }, [])
 
