@@ -2,7 +2,7 @@
 
 import { useEffect } from "react"
 
-const callback: React.FC = (props: any) => {
+const Callback: React.FC = (props: any) => {
   // get the code
   // follow the instructions
   /**Tokens de acesso
@@ -31,26 +31,28 @@ grant_type=authorization_code&code=[authorization_code] */
     body.append("grant_type", "authorization_code")
     body.append("code", code)
     body.append("state", state)
-    // no cors
+
+    // Removed 'mode: "no-cors"' as this mode doesn't allow you to access the response data
     const response = await fetch(url, {
       method: "POST",
-      mode: "no-cors",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
         Accept: "1.0",
         Authorization: `Basic ${base64}`,
       },
-      body,
+      body: body.toString(), // Convert URLSearchParams to string
     }).catch((err) => {
       console.log("err")
-      console.log(err)
+      console.error(err) // Changed to console.error() for better visibility
       console.log("err")
-      return { json: () => ({ err }) }
+      throw new Error(err)
     })
+
     const data = await response.json()
     console.log(data)
     return data
   }
+
   useEffect(() => {
     getTokenHandler().then((data) => {
       alert(JSON.stringify(data))
@@ -59,6 +61,7 @@ grant_type=authorization_code&code=[authorization_code] */
       }, 2000)
     })
   }, [])
+
   return (
     <div className="flex justify-center items-center h-screen w-screen">
       <i className="fas fa-spinner animate-spin text-6xl" />
@@ -66,4 +69,4 @@ grant_type=authorization_code&code=[authorization_code] */
   )
 }
 
-export default callback
+export default Callback
