@@ -1,5 +1,6 @@
 import { Poppins } from "next/font/google"
 import "../styles/globals.scss"
+import Tabs from "./tabs"
 
 export const metadata = {
   title: "Integração de Aplicação",
@@ -15,7 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
       </head>
       <body className={poppins.className} id="root">
-        {children}
+        <Tabs>{children}</Tabs>
       </body>
     </html>
   )

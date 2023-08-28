@@ -18,7 +18,7 @@ const Callback: React.FC = (props: any) => {
   }, [props.searchParams.code, props.searchParams.state])
 
   return (
-    <div className="flex justify-center items-center h-screen w-screen">
+    <div className="flex justify-center items-center min-h-screen w-screen">
       {error ? (
         <div className="flex flex-col justify-center items-center">
           <i className="fas fa-exclamation-triangle text-6xl text-red-500" />

@@ -32,7 +32,24 @@ export async function getTokenHandler(args: { code: string; state: string }): Pr
     output: response,
   }
 }
-export async function readTokens() {
+export async function readTokens(pass: string) {
+  if (!pass) {
+    return {
+      error: {
+        message: "Error while trying to read tokens from Bling",
+        error: "Missing password",
+      },
+    }
+  }
+  if (pass !== process.env.BLING_DELETE_TOKENS_PASSWORD) {
+    return {
+      error: {
+        message: "Error while trying to read tokens from Bling",
+        error: "Wrong password",
+      },
+    }
+  }
+
   const db = new sqlite3.Database("BlingTokensDb.sqlite")
 
   await CreateTableIfNotExist(db)
@@ -44,7 +61,17 @@ export async function readTokens() {
   return tokens
 }
 
-export async function deleteTokens(args: { ids: number[] }) {
+export async function deleteTokens(args: { ids: number[]; password: string }) {
+  console.log("args", args)
+  console.log(process.env.BLING_DELETE_TOKENS_PASSWORD)
+  if (args.password !== process.env.BLING_DELETE_TOKENS_PASSWORD) {
+    return {
+      error: {
+        message: "Error while trying to delete tokens from Bling",
+        error: "Wrong password",
+      },
+    }
+  }
   const db = new sqlite3.Database("BlingTokensDb.sqlite")
 
   await AsyncDeleteTokens(db, args.ids)
